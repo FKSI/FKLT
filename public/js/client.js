@@ -1,8 +1,8 @@
 $(function(){
 	/********** Variables init **********/
 	var socket = io.connect();
-		var _msg = { _type:'', _txtContent:'', _imgContent:'' }
-	document.getElementById("send-message").reset();
+	var _msg = { _type:'', _txtContent:'', _imgContent:'' }
+	resetInputFile();
 	
 	/********** Native JS functions **********/
 	function displayMsg(msg, nick){
@@ -14,7 +14,7 @@ $(function(){
 	function displayUsers(users){
 		var html = '';
 		for (var i = 0; i < users.length; i++) {
-			html += '<div class="user" id="user' + users[i].id + '">' + users[i].nick + '</span>';
+			html += '<div class="user" id="user' + users[i].id + '">' + users[i].nick + 					'</span>';
 		}
 		$('#users').append(html);
 	    $('.user').click(function(e){
@@ -24,6 +24,11 @@ $(function(){
 	    	userToPM = $(this).attr('id').substring(4);
 	    	$('#user-to-pm').html('<h2>' + $(this).text() + '</h2>');
 	    });
+	}
+	
+	
+	function resetInputFile(){
+		document.getElementById("send-message").reset();
 	}
 	
 	/********** jQuery functions **********/
@@ -43,9 +48,8 @@ $(function(){
 
     $('#sendMsgBtn').click(function(e){
         e.preventDefault();
-        var msgContent = $('#new-message').val();
-		var imgContent = '';
-		
+        var txtContent = $('#new-message').val();
+		var imgContent = '';		
 		
 		if (window.File && window.FileReader && window.FileList && window.Blob) {
 			var file = document.getElementById("filesToUpload").files[0];
@@ -53,23 +57,44 @@ $(function(){
 				if (file.type.match('image.*')) {
 					reader = new FileReader();
 					reader.onload = function(evt){        			
-						console.log("inside reload");
-
-						var div = document.createElement('div');
-						div.innerHTML = '<img style="width: 90px;" src="' + evt.target.result + '" />';
-						document.getElementById('filesInfo').appendChild(div);
 						
+						// Set the preview
+						var div = document.createElement('div');
+						div.id = "image-preview";
+						div.innerHTML = '<img style="width: 90px;" src="' + 													evt.target.result + '" />';
+						document.getElementById('filesInfo').appendChild(div);
 						imgContent = evt.target.result;
-						console.log("evt.target.result %O", evt.target.result);
+						
+						// Handle image messages w/ or w/o text
+						if(txtContent != ''){
+							_msg._type = "medias";
+							_msg._txtContent = txtContent;
+							_msg._imgContent = imgContent;
+						}else{
+							_msg._type = "image";
+							_msg._imgContent = imgContent;
+						}
+						
 						socket.emit('message', evt.target.result);
+						
+						// Remove preview
+						$('#image-preview').remove();
 					};
 					reader.readAsDataURL(file); 
 				}
+			}else if (txtContent != ''){
+				_msg._type = "text";
+				_msg._txtContent = txtContent;
+				
+				console.log("Emitting _msg %O", _msg);
+				socket.emit('message', txtContent);
 			}
 		}else{
 			alert('The File APIs are not fully supported in this browser.');
 		}
-		socket.emit('message', msgContent);
+		
+		
+		resetInputFile();
         $('#new-message').val('');
     });    
 	
