@@ -2,12 +2,30 @@ $(function(){
 	/********** Variables init **********/
 	var socket = io.connect();
 	var _msg = { _type:'', _txtContent:'', _imgContent:'' }
+	var MSG_TYPE = {0:"image", 1:"medias", 2:"text"}
 	resetInputFile();
 	
 	/********** Native JS functions **********/
-	function displayMsg(msg, nick){
-    	var html = "<span class='msg'><strong>" + nick + ":</strong> " + msg;
-    	$('#chat').append(html);
+	function displayMsg(data){
+		switch(data.type){
+			case MSG_TYPE[0]:
+				var html = 
+						"<span class='msg'><strong>" + data.nick + ":</strong> " + 							'<img style="width: 200px;" src="' + data.imgContent + '" />'
+				break;
+			case MSG_TYPE[1]:
+				var html = 
+						"<span class='msg'><strong>" + data.nick + ":</strong> " 
+						+
+						'<img style="width: 200px;" src="' + data.imgContent + '" />'
+						+
+						data.txtContent
+						
+				break;
+			case MSG_TYPE[2]:
+				var html = "<span class='msg'><strong>" + data.nick + ":</strong> " + 							data.txtContent;
+				break;
+		}
+		$('#chat').append(html);
     }
 	
 
@@ -67,15 +85,15 @@ $(function(){
 						
 						// Handle image messages w/ or w/o text
 						if(txtContent != ''){
-							_msg._type = "medias";
+							_msg._type = MSG_TYPE[1];
 							_msg._txtContent = txtContent;
 							_msg._imgContent = imgContent;
 						}else{
-							_msg._type = "image";
+							_msg._type = MSG_TYPE[0];
 							_msg._imgContent = imgContent;
 						}
 						
-						socket.emit('message', evt.target.result);
+						socket.emit('message', _msg);
 						
 						// Remove preview
 						$('#image-preview').remove();
@@ -83,11 +101,11 @@ $(function(){
 					reader.readAsDataURL(file); 
 				}
 			}else if (txtContent != ''){
-				_msg._type = "text";
+				_msg._type = MSG_TYPE[2];
 				_msg._txtContent = txtContent;
 				
 				console.log("Emitting _msg %O", _msg);
-				socket.emit('message', txtContent);
+				socket.emit('message', _msg);
 			}
 		}else{
 			alert('The File APIs are not fully supported in this browser.');
@@ -100,12 +118,13 @@ $(function(){
 	
 	/********** socket.io listenners **********/
     socket.on('message', function(data){
-    	displayMsg(data.msg, data.nick)
+		console.log("data back from server", data);
+    	displayMsg(data)
     });
 
     socket.on('load old msgs', function(docs){
     	for (var i = docs.length-1; i >= 0; i--) {
-    		displayMsg(docs[i].msg, docs[i].nick);
+    		displayMsg(docs[i]);
     	}
     });
 	
