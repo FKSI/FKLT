@@ -1,8 +1,11 @@
-$(function(){
+var app = angular.module('StarterApp', ['ngMaterial','ngMessages']);
+
+app.controller('AppCtrl', ['$scope', '$mdSidenav', function($scope, $mdSidenav){
 	/********** Variables init **********/
 	var socket = io.connect();
 	var _msg = { _type:'', _txtContent:'', _imgContent:'' }
 	var MSG_TYPE = {0:"image", 1:"medias", 2:"text"}
+	$scope.user = {login:''}
 	resetInputFile();
 	
 	/********** Native JS functions **********/
@@ -46,7 +49,24 @@ $(function(){
 	
 	
 	function resetInputFile(){
-		document.getElementById("send-message").reset();
+	//	document.getElementById("send-message").reset();
+	}
+	
+	$scope.validateLoginForm = function(){
+		console.log($scope.user.login);
+		var nick = $scope.user.login;
+		if(nick != undefined && nick != ''){
+			socket.emit('choose nickname', nick, function(err){
+				if (err) {
+					$('#nick-error').text(err);
+					$('#nickname').val('');
+				} else {
+					$('#loginCard').hide();
+					$('#chat-container').show();
+				}
+			});
+			
+		}
 	}
 	
 	/********** jQuery functions **********/
@@ -140,5 +160,11 @@ $(function(){
 		console.log(id);
 		$('#user'+id).remove();
 	});
+
+ 
+}]);
+
+
+$(function(){
 
 });
