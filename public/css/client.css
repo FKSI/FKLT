@@ -88,15 +88,18 @@ md-list{
 	border-radius: 50%;
 }
 
-#loginCard{
+#loginCard,
+#sendMessageCard{
 	width:30%;
 }
 
-input[name="loginInput"]{
+input[name="loginInput"],
+textarea[name="msgText"]{
 	border-color: #3F51B5 !important;
 	border-width: 0 0 2px !important;
 }
 
-
-
-
+input[type="file"],
+#imgPreview{
+	display:none;
+}

@@ -8,41 +8,12 @@
 	<!-- Angulars Material CSS now available via Google CDN; version 0.7 used here -->
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.7.1/angular-material.min.css">
 </head>
-<body>
-
-<!--
-    <div class="container" id="nickname-container">
-        <h1>Choose a nickname!</h1>
-        <span id="nick-error"></span>
-        <form id="choose-nickname">
-            <input type="text" id="nickname"></input>
-        </form>
-    </div>
--->
-
-    <div class="container" id="chat-container">
-        <div class="row">
-            <div class="clearfix visible-xs"></div>
-            <div class="col-md-4" id="chat-col">
-                <div class="row">
-                    <form id="send-message">
-                        <input type="text" id="new-message" autocomplete="off"></input>
-						<input type="file" id="filesToUpload" />
-						<output id="filesInfo"></output>
-					  	<button id="sendMsgBtn">SEND</button>
-                    </form>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
 <body layout="column" ng-controller="AppCtrl">
 	<md-toolbar>
 		<h1>Welcome</h1>
 	</md-toolbar>
 	<md-content class="md-padding" layout="column" layout-align="center center" layout-margin layout-fill layout-padding flex="66">
-		<md-card id="loginCard">
+		<md-card id="loginCard" data-ng-show="isLogin">
 			<md-content id="loginAvatar">
 				<img src="image/avatar.png" alt="Washed Out">
 			</md-content>
@@ -50,22 +21,49 @@
 				<form name="userForm">
 					<div layout layout-sm="column">
 						<md-input-container flex>
-							<label>Quel est ton pseudo ?</label>
+							<label>Quel est ton petit nom ?</label>
 							<input required name="loginInput" data-ng-model="user.login" 
-								   md-maxlength="14" data-ng-click="validateLoginForm()">
+								   md-maxlength="14">
 							<div ng-messages="userForm.loginInput.$error"  ng-show="userForm.loginInput.$dirty">
 								<div ng-message="required">This is required.</div>
 							</div>
 						</md-input-container>
 					</div>
-					<div layout="column" layout-align="space-around center" layout-margin>
-						<md-button class="md-raised md-primary" layout-margin layout-padding data-ng-click="validateLoginForm()" ng-disabled="userForm.$invalid">
+					<md-content layout="column" layout-align="space-around center" layout-margin>
+						<md-button class="md-raised md-primary" layout-margin layout-padding data-ng-click="validateLoginForm()" data-ng-disabled="userForm.$invalid">
 							go !
 						</md-button>
-					</div>
+					</md-content >
 				</form>
 			</md-card-content>
 		</md-card>
+		
+		<md-card id="sendMessageCard" data-ng-show="!isLogin">
+			<md-card-content>
+				<img id="imgPreview" src="" height="200" alt="Image preview...">
+				<form id="sendMessageForm" name="sendMessageForm">
+					<md-content layout layout-sm="column" layout-align="space-around center" layout-margin>
+						<md-input-container flex layout="column">
+							<label>Message:</label>
+							<textarea id="foo" name="msgText" data-ng-model="msg._txtContent" 
+									  md-maxlength="140"></textarea>
+						</md-input-container>
+							<input type="file"  id="filesToUpload" />
+							<md-button class="md-fab md-primary" aria-label="New document"
+									   data-ng-click="uploadFile()">
+						<md-input-container>
+							
+						</md-input-container>
+					</md-content>
+					<md-content layout="column" layout-aling="space-around center" layout-margin>
+							<md-button class="md-raised md-primary" data-ng-click="sendMessage()" data-ng-disabled=" !msg._txtContent && !isLoadImageFinish">
+								Send
+							</md-button>
+					</md-content>
+				</form>
+			</md-card-content>
+		</md-card>
+		
 	</md-content>
 
 	<!-- Angular Material Dependencies -->

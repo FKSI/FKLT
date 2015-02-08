@@ -6,140 +6,106 @@ app.controller('AppCtrl', ['$scope', '$mdSidenav', function($scope, $mdSidenav){
 	var _msg = { _type:'', _txtContent:'', _imgContent:'' }
 	var MSG_TYPE = {0:"image", 1:"medias", 2:"text"}
 	$scope.user = {login:''}
+	$scope.isLogin = true;
+	$scope.isLoadImageFinish = false;
+	$scope.msg = { _type:'', _txtContent:'', _imgContent:'' }
+	$scope.msg._txtContent = '';
+	$scope.previewImage ='';
+	
 	resetInputFile();
 	
 	/********** Native JS functions **********/
-	function displayMsg(data){
-		switch(data.type){
-			case MSG_TYPE[0]:
-				var html = 
-						"<span class='msg'><strong>" + data.nick + ":</strong> " + 							'<img style="width: 200px;" src="' + data.imgContent + '" />'
-				break;
-			case MSG_TYPE[1]:
-				var html = 
-						"<span class='msg'><strong>" + data.nick + ":</strong> " 
-						+
-						'<img style="width: 200px;" src="' + data.imgContent + '" />'
-						+
-						data.txtContent
-						
-				break;
-			case MSG_TYPE[2]:
-				var html = "<span class='msg'><strong>" + data.nick + ":</strong> " + 							data.txtContent;
-				break;
-		}
-		$('#chat').append(html);
-    }
-	
-
-	function displayUsers(users){
-		var html = '';
-		for (var i = 0; i < users.length; i++) {
-			html += '<div class="user" id="user' + users[i].id + '">' + users[i].nick + 					'</span>';
-		}
-		$('#users').append(html);
-	    $('.user').click(function(e){
-	    	if (!userToPM) {
-	    		$('#pm-col').show();
-	    	}
-	    	userToPM = $(this).attr('id').substring(4);
-	    	$('#user-to-pm').html('<h2>' + $(this).text() + '</h2>');
-	    });
-	}
-	
-	
 	function resetInputFile(){
-	//	document.getElementById("send-message").reset();
+		document.getElementById("sendMessageForm").reset();
 	}
+	
+	function previewFile () {
+		if (window.File && window.FileReader && window.FileList && window.Blob) {
+			var preview = document.getElementById("imgPreview");
+			var file    = document.getElementById("filesToUpload").files[0];
+			var reader  = new FileReader();
+
+			reader.onloadend = function () {
+				$('#imgPreview').show();
+				preview.src = reader.result;
+				$scope.previewImage = reader.result;
+				$scope.isLoadImageFinish = true;
+				$scope.$apply();
+			}
+			if (file) {
+				reader.readAsDataURL(file);
+			} else {
+				preview.src = "";
+			}
+		}else{
+			alert('The File APIs are not fully supported in this browser.');
+		}
+	};
+	
+	$("#filesToUpload").on("change",previewFile);
+	
+	
 	
 	$scope.validateLoginForm = function(){
-		console.log($scope.user.login);
 		var nick = $scope.user.login;
 		if(nick != undefined && nick != ''){
+			console.log("nick ", nick);	
 			socket.emit('choose nickname', nick, function(err){
 				if (err) {
-					$('#nick-error').text(err);
-					$('#nickname').val('');
+					//TODO Display in the UI
+					console.log("Login error %O", err);
+					$scope.isLogin = true;
 				} else {
-					$('#loginCard').hide();
-					$('#chat-container').show();
+					console.log("login success");
+					$scope.isLogin = false;
 				}
+				$scope.$digest();
 			});
 			
 		}
 	}
 	
-	/********** jQuery functions **********/
-	$('#choose-nickname').submit(function(e){
-		e.preventDefault();
-		var nick = $('#nickname').val();
-		socket.emit('choose nickname', nick, function(err){
-			if (err) {
-				$('#nick-error').text(err);
-				$('#nickname').val('');
-			} else {
-				$('#nickname-container').hide();
-				$('#chat-container').show();
-			}
-		});
-	});
+	/********** AngularJS functions **********/
+	$scope.uploadFile = function(){
+		$('#filesToUpload').click();
+	}
+	
+	$scope.sendMessage = function(){
+		var txtContent = '';
+		var imgContent ='';
+		txtContent = $scope.msg._txtContent;
+		imgContent = $scope.previewImage;		
 
-    $('#sendMsgBtn').click(function(e){
-        e.preventDefault();
-        var txtContent = $('#new-message').val();
-		var imgContent = '';		
+		var temp = jQuery.extend(true, {}, _msg); 
 		
-		if (window.File && window.FileReader && window.FileList && window.Blob) {
-			var file = document.getElementById("filesToUpload").files[0];
-			if(file != undefined){
-				if (file.type.match('image.*')) {
-					reader = new FileReader();
-					reader.onload = function(evt){        			
-						
-						// Set the preview
-						var div = document.createElement('div');
-						div.id = "image-preview";
-						div.innerHTML = '<img style="width: 90px;" src="' + 													evt.target.result + '" />';
-						document.getElementById('filesInfo').appendChild(div);
-						imgContent = evt.target.result;
-						
-						// Handle image messages w/ or w/o text
-						if(txtContent != ''){
-							_msg._type = MSG_TYPE[1];
-							_msg._txtContent = txtContent;
-							_msg._imgContent = imgContent;
-						}else{
-							_msg._type = MSG_TYPE[0];
-							_msg._imgContent = imgContent;
-						}
-						
-						socket.emit('message', _msg);
-						
-						// Remove preview
-						$('#image-preview').remove();
-					};
-					reader.readAsDataURL(file); 
-				}
-			}else if (txtContent != ''){
-				_msg._type = MSG_TYPE[2];
-				_msg._txtContent = txtContent;
-				
-				console.log("Emitting _msg %O", _msg);
-				socket.emit('message', _msg);
-			}
+		if(txtContent == "" && (imgContent != undefined || imgContent != "")){
+			temp._type = MSG_TYPE[0];
+			temp._imgContent = imgContent;
+		}else if(txtContent != "" && (imgContent == undefined || imgContent == "")){
+			temp._type = MSG_TYPE[2];
+			temp._txtContent = txtContent;
 		}else{
-			alert('The File APIs are not fully supported in this browser.');
+			temp._type = MSG_TYPE[1];
+			temp._txtContent = txtContent;
+			temp._imgContent = imgContent;
 		}
 		
+		console.log("Emitting temp %O", temp);
+		socket.emit('message', temp);
 		
+		$('#imgPreview').hide();
+		console.log('ezf',$scope.msg._txtContent);
+		$scope.msg._txtContent = '';
+		$scope.previewImage ='';
+		$('#foo').val('');
 		resetInputFile();
-        $('#new-message').val('');
-    });    
+		
+	}
 	
 	/********** socket.io listenners **********/
-    socket.on('message', function(data){
+/*    socket.on('message', function(data){
 		console.log("data back from server", data);
-    	displayMsg(data)
+//    	displayMsg(data)
     });
 
     socket.on('load old msgs', function(docs){
@@ -159,12 +125,7 @@ app.controller('AppCtrl', ['$scope', '$mdSidenav', function($scope, $mdSidenav){
 	socket.on('user disconnect', function(id){
 		console.log(id);
 		$('#user'+id).remove();
-	});
+	});*/
 
  
 }]);
-
-
-$(function(){
-
-});
