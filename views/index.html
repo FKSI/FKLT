@@ -60,7 +60,13 @@
 										  data-ng-model="msg._txtContent" 
 										data-ng-maxlength="140">
 								</textarea>
-								<label for="textarea1">En 140 caractères max. avec ou sans image :)</label>
+								<label for="textarea1">
+									En 140 caractères max. avec ou sans image :)
+								</label>
+								<span class="right" 
+									  data-ng-class="{'red-text': msg._txtContent.length>140}">
+									{{140 - msg._txtContent.length}}/140
+								</span>
 							</div>
 					</form>
 				</div>
