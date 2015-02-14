@@ -1,4 +1,4 @@
-::-webkit-validation-bubble-message { 
+/*::-webkit-validation-bubble-message { 
 	display: none; 
 }
 
@@ -66,8 +66,9 @@ html, body {
     width: 100%;
 }
 
+*/
 
-/*********/
+
 md-toolbar h1 {
   font-size: 1.250em;
   font-weight: 400;
@@ -88,13 +89,15 @@ md-list{
 	border-radius: 50%;
 }
 
+/*
 #loginCard,
 #sendMessageCard{
-	width:30%;
+	width:40%;
 }
+*/
 
 input[name="loginInput"],
-textarea[name="msgText"]{
+input[name="msgText"]{
 	border-color: #3F51B5 !important;
 	border-width: 0 0 2px !important;
 }

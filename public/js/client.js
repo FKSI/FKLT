@@ -1,6 +1,6 @@
-var app = angular.module('StarterApp', ['ngMaterial','ngMessages']);
+var app = angular.module('StarterApp', []);
 
-app.controller('AppCtrl', ['$scope', '$mdSidenav', function($scope, $mdSidenav){
+app.controller('AppCtrl', ['$scope', function($scope){
 	/********** Variables init **********/
 	var socket = io.connect();
 	var _msg = { _type:'', _txtContent:'', _imgContent:'' }
@@ -16,7 +16,7 @@ app.controller('AppCtrl', ['$scope', '$mdSidenav', function($scope, $mdSidenav){
 	
 	/********** Native JS functions **********/
 	function resetInputFile(){
-		document.getElementById("sendMessageForm").reset();
+		/*document.getElementById("sendMessageForm").reset();*/
 	}
 	
 	function previewFile () {
@@ -48,6 +48,7 @@ app.controller('AppCtrl', ['$scope', '$mdSidenav', function($scope, $mdSidenav){
 	
 	$scope.validateLoginForm = function(){
 		var nick = $scope.user.login;
+		console.log("nick ", nick);	
 		if(nick != undefined && nick != ''){
 			console.log("nick ", nick);	
 			socket.emit('choose nickname', nick, function(err){

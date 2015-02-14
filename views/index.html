@@ -1,70 +1,82 @@
 <html ng-app="StarterApp">
 
 <head>
-	<title>Node.js Chat</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css" />
+	<title>The Wedding Wall - W²</title>
+	
 	<link rel="stylesheet" href="/css/client.css" />
+  	<!--Import materialize.css-->
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 
-	<!-- Angulars Material CSS now available via Google CDN; version 0.7 used here -->
-	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.7.1/angular-material.min.css">
+	<!--Let browser know website is optimized for mobile-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 </head>
-<body layout="column" ng-controller="AppCtrl">
-	<md-toolbar>
-		<h1>Welcome</h1>
-	</md-toolbar>
-	<md-content class="md-padding" layout="column" layout-align="center center" layout-margin layout-fill layout-padding flex="66">
-		<md-card id="loginCard" data-ng-show="isLogin">
-			<md-content id="loginAvatar">
-				<img src="image/avatar.png" alt="Washed Out">
-			</md-content>
-			<md-card-content>
-				<form name="userForm">
-					<div layout layout-sm="column">
-						<md-input-container flex>
-							<label>Quel est ton petit nom ?</label>
-							<input required name="loginInput" data-ng-model="user.login" 
-								   md-maxlength="14">
-							<div ng-messages="userForm.loginInput.$error"  ng-show="userForm.loginInput.$dirty">
-								<div ng-message="required">This is required.</div>
-							</div>
-						</md-input-container>
+<body data-ng-controller="AppCtrl">
+	<nav class="indigo lighten-1" role="navigation">
+		<div class="container">
+		  <div class="nav-wrapper">
+			  <a id="logo-container" href="#" class="brand-logo">The Wedding Wall - W²</a>
+		  </div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col s12 m12">
+			<div class="card blue-grey darken-3" data-ng-show="isLogin">
+				<div class="card-content white-text">
+					<div id="loginAvatar" class="center-align">
+						 <i class="large mdi-action-face-unlock"></i>
 					</div>
-					<md-content layout="column" layout-align="space-around center" layout-margin>
-						<md-button class="md-raised md-primary" layout-margin layout-padding data-ng-click="validateLoginForm()" data-ng-disabled="userForm.$invalid">
-							go !
-						</md-button>
-					</md-content >
-				</form>
-			</md-card-content>
-		</md-card>
-		
-		<md-card id="sendMessageCard" data-ng-show="!isLogin">
-			<md-card-content>
-				<img id="imgPreview" src="" height="200" alt="Image preview...">
-				<form id="sendMessageForm" name="sendMessageForm">
-					<md-content layout layout-sm="column" layout-align="space-around center" layout-margin>
-						<md-input-container flex layout="column">
-							<label>Message:</label>
-							<textarea id="foo" name="msgText" data-ng-model="msg._txtContent" 
-									  md-maxlength="140"></textarea>
-						</md-input-container>
-							<input type="file"  id="filesToUpload" />
-							<md-button class="md-fab md-primary" aria-label="New document"
-									   data-ng-click="uploadFile()">
-						<md-input-container>
-							
-						</md-input-container>
-					</md-content>
-					<md-content layout="column" layout-aling="space-around center" layout-margin>
-							<md-button class="md-raised md-primary" data-ng-click="sendMessage()" data-ng-disabled=" !msg._txtContent && !isLoadImageFinish">
-								Send
-							</md-button>
-					</md-content>
-				</form>
-			</md-card-content>
-		</md-card>
-		
-	</md-content>
+					<span class="card-title">Ton petit nom ?</span>
+					<form name="userForm">
+							<div class="input-field">
+								<i class="mdi-action-account-circle prefix"></i>
+								<input required id="icon_prefix" type="text" class="validate" 
+									   data-ng-model="user.login" 
+									   data-ng-maxlength="8">
+								<label for="icon_prefix">Ex: KYKY</label>
+							</div>
+					</form>
+				</div>
+				<div class="card-action valign-wrapper center-align">
+					  <button class="btn-large waves-effect waves-light" 
+								type="submit" name="action"
+								data-ng-click="validateLoginForm()" 
+								data-ng-disabled="userForm.$invalid">
+								Submit
+								<i class="mdi-content-send right"></i>
+					  </button>
+				</div>
+			</div>
+			<div class="card" data-ng-show="!isLogin">
+				<div class="card-content black-text">
+					<div class="card-image waves-effect waves-block waves-light center-align">
+						<img id="imgPreview" src="" alt="Image Preview">
+					</div>
+					<span class="card-title black-text">Ton message ?</span>
+					<form name="sendMessageForm">
+							<div class="input-field">
+								<i class="small mdi-image-photo right" data-ng-click="uploadFile()"></i>
+								<input type="file"  id="filesToUpload" />
+								<textarea id="textarea1" class="materialize-textarea" 
+										  data-ng-model="msg._txtContent" 
+										data-ng-maxlength="140">
+								</textarea>
+								<label for="textarea1">En 140 caractères max. avec ou sans image :)</label>
+							</div>
+					</form>
+				</div>
+				<div class="card-action valign-wrapper center-align white-text">
+					<button class="btn-large waves-effect waves-light" 
+							type="submit" name="action"
+							data-ng-click="sendMessage()" 
+							data-ng-disabled=" !msg._txtContent && !isLoadImageFinish">
+							Envoyer
+							<i class="mdi-content-send right"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 
 	<!-- Angular Material Dependencies -->
 	<script type="text/javascript" src="/js/hammer.js"></script>
@@ -77,10 +89,9 @@
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="/js/client.js"></script>
 
-
-
-	<!-- Angular Material Javascript now available via Google CDN; version 0.7 used here -->
-	<script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.7.1/angular-material.min.js"></script>
+	<script type="text/javascript" src="js/materialize.min.js"></script>
+	
+	
 </body>
 
 </html>
