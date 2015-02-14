@@ -31,7 +31,8 @@
 								<i class="mdi-action-account-circle prefix"></i>
 								<input required id="icon_prefix" type="text" class="validate" 
 									   data-ng-model="user.login" 
-									   data-ng-maxlength="8">
+									   data-ng-maxlength="8"
+                                       style="text-transform:uppercase">
 								<label for="icon_prefix">Ex: KYKY</label>
 							</div>
 					</form>
@@ -60,11 +61,11 @@
 										  data-ng-model="msg._txtContent" 
 										data-ng-maxlength="140">
 								</textarea>
-								<label for="textarea1">
+								<label class="col m6" for="textarea1">
 									En 140 caractères max. avec ou sans image :)
 								</label>
 								<span class="right" 
-									  data-ng-class="{'red-text': msg._txtContent.length>140}">
+									  ng-class="{'red-text': msg._txtContent.length>140}">
 									{{140 - msg._txtContent.length}}/140
 								</span>
 							</div>
