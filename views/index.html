@@ -55,8 +55,8 @@
 					<span class="card-title black-text">Ton message ?</span>
 					<form name="sendMessageForm">
 							<div class="input-field">
-								<i class="small mdi-image-photo right" data-ng-click="uploadFile()"></i>
-								<input type="file"  id="filesToUpload" />
+								<i class="small mdi-image-photo-camera right" data-ng-click="uploadFile()"></i>
+								<input type="file"  capture="camera"  id="filesToUpload" />
 								<textarea id="textarea1" class="materialize-textarea" 
 										  data-ng-model="msg._txtContent" 
 										data-ng-maxlength="140">
