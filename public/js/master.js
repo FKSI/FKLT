@@ -1,40 +1,45 @@
-$(function(){
-	var socket = io.connect();
-	var MSG_TYPE = {0:"image", 1:"medias", 2:"text"}
+var app = angular.module('masterApp', []);
 
-	/********** Native JS functions **********/
+app.controller('masterCtrl', ['$scope', function($scope){
+	var socket = io.connect();
+	var MSG_TYPE = {0:"image", 1:"medias", 2:"text"};
+	$scope.msg = {
+		_type: '',
+		_txtContent: '',
+		_imgContent: '',
+		_nickName:''
+	};
+	$scope.displayNormalMsg = false;
+	$scope.displayNormalImg = false;
+
+	
 	function displayMsg(data){
+		$scope.msg._nickName = data.nick;
 		switch(data.type){
 			case MSG_TYPE[0]:
-				var html = 
-						"<span class='msg'><strong>" + data.nick + ":</strong> " + 							'<img style="width: 200px;" src="' + data.imgContent + '" />'
+				$scope.msg._imgContent = data.imgContent;
+				console.log($scope.msg._imgContent)
+				$scope.displayNormalImg = true;
 				break;
 			case MSG_TYPE[1]:
-				var html = 
-						"<span class='msg'><strong>" + data.nick + ":</strong> " 
-						+
-						'<img style="width: 200px;" src="' + data.imgContent + '" />'
-						+
-						data.txtContent
 						
+				$scope.msg._txtContent = data.txtContent;
+				$scope.msg._imgContent = data.imgContent;
+				console.log($scope.msg._imgContent)
+				$scope.displayNormalImg = true;
 				break;
 			case MSG_TYPE[2]:
-				var html = "<span class='msg'><strong>" + data.nick + ":</strong> " + 							data.txtContent;
+				$scope.msg._txtContent = data.txtContent;
 				break;
 		}
-		$('#chat').append(html);
     }
 	
 	
 	socket.on('message', function(data){
     	displayMsg(data);
+		$scope.displayNormalMsg = true;
+		$scope.$digest();
     });
 
-    socket.on('load old msgs', function(docs){
-    	for (var i = docs.length-1; i >= 0; i--) {
-    		displayMsg(docs[i]);
-    	}
-    });
-	
+}]);
 
-});

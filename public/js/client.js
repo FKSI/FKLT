@@ -1,6 +1,6 @@
-var app = angular.module('clientApp', []);
+var app = angular.module('clientApp', ['ngCookies']);
 
-app.controller('clientCtrl', ['$scope', function ($scope) {
+app.controller('clientCtrl', ['$scope','$filter','$cookieStore', function ($scope,$filter,$cookieStore) {
 	/********** Variables init **********/
 	var socket = io.connect();
 	var _msg = {
@@ -25,7 +25,13 @@ app.controller('clientCtrl', ['$scope', function ($scope) {
 	}
 	$scope.msg._txtContent = '';
 	$scope.previewImage = '';
-
+	
+	if($cookieStore.get('cookedNickname') != ''){
+		$scope.user.login = $cookieStore.get('cookedNickname');
+	}else{
+		$scope.user.login = '';
+	}
+	
 	
 	/**
 	*
@@ -74,7 +80,8 @@ app.controller('clientCtrl', ['$scope', function ($scope) {
 	$scope.validateLoginForm = function () {
 		var nick = $scope.user.login;
 		if (nick != undefined && nick != '') {
-			socket.emit('choose nickname', nick, function (err) {
+			$cookieStore.put('cookedNickname', nick);
+			socket.emit('choose nickname', $filter('uppercase')($scope.user.login), function (err) {
 				if (err) {
 					//TODO Display in the UI
 					console.log("Login error %O", err);
