@@ -35,10 +35,7 @@ app.controller('clientCtrl', ['$scope', '$filter', '$cookieStore', function ($sc
 
 	if ($cookieStore.get('cookedNickname') != '') {
 		$scope.user.login = $cookieStore.get('cookedNickname');
-	} else {
-		$scope.user.login = '';
 	}
-
 
 	/**
 	 *
@@ -88,10 +85,9 @@ app.controller('clientCtrl', ['$scope', '$filter', '$cookieStore', function ($sc
 		var nick = $filter('uppercase')($scope.user.login);
 		if (nick != undefined && nick != '') {
 			$cookieStore.put('cookedNickname', nick);
-			socket.emit('choose nickname',nick , function (err) {
+			socket.emit('choose nickname', nick, function (err) {
 				if (err) {
-					//TODO Display in the UI
-					console.log("Login error %O", err);
+					toast('<span class=red-text>Ce pseudo est déjà pris :(</span>', 2000);
 					$scope.isLogin = true;
 				} else {
 					$scope.isLogin = false;
@@ -152,7 +148,14 @@ app.controller('clientCtrl', ['$scope', '$filter', '$cookieStore', function ($sc
 
 
 		// Send the message
-		socket.emit('message', temp);
+		socket.emit('message', temp, function (cb) {
+			console.log("cb : ", cb);
+			if (cb) {
+				toast('Message envoyé !<a class="btn-flat blue-text" href="#">OK<a>', 2000);
+			}else{
+				toast('Oups, ça n\'a pas fonctionné !<a class="btn-flat blue-text" href="#">OK<a>', 2000);
+			}
+		});
 
 		// Clear the form
 		$('#imgPreview').hide();
