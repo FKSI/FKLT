@@ -11,34 +11,44 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 </head>
 
-<body data-ng-controller="masterCtrl">
+<body data-ng-controller="masterCtrl" data-ng-class="{'pink accent-4': normalMsg._isEmpty && photoHuntMsg._isEmpty }">
 	<nav class="pink lighten-1" role="navigation"></nav>
+	<div class="container valign-wrapper white-text" data-ng-show="normalMsg._isEmpty && photoHuntMsg._isEmpty">
+		<i class="large mdi-file-cloud-circle"></i>
+		<label class="valign flow-text white-text">
+			Rien à afficher pour l'instant :(
+		</label>
+	</div>
 	<!-- NORMAL MESSAGES -->
 	<div class="row valign-wrapper">
 		<div class="col s6 m6">
-			<div class="card white-text cyan lighten-1 z-depth-2" id="classicMessageTextOnlyBlock" data-ng-show="displayNormalMsg">
-				<div class="card-image" data-ng-show="displayNormalImg">
-					<img data-ng-src="{{msg._imgContent}}" />
+			<div class="card white-text cyan lighten-1 z-depth-2" data-ng-show="!normalMsg._isEmpty">
+				<div class="card-image" data-ng-show="normalMsg._isImg">
+					<img data-ng-src="{{normalMsg._imgContent}}" />
 				</div>
 				<div class="card-content">
 					<div id="textContent" class="flow-text">
-						{{msg._txtContent}}
+						{{normalMsg._txtContent}}
 					</div>
 					<div id="textContent" class="flow-text right-align">
-						{{msg._nickName}}
+						{{normalMsg._nickName}}
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- PHOTOHUNT MESSAGES -->
 		<div class="col s6 m6">
-			<div class="card white-text deep-purple lighten-1 z-depth-2">
-				<div class="card-image">
-					<img src="image/office.jpg">
-					<span class="card-title">Card Title</span>
+			<div class="card white-text deep-purple lighten-1 z-depth-2" data-ng-show="!photoHuntMsg._isEmpty">
+				<div class="card-image" data-ng-show="photoHuntMsg._isImg">
+					<img data-ng-src="{{photoHuntMsg._imgContent}}" />
 				</div>
 				<div class="card-content">
-					<p class="flow-text">I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+					<div id="textContent" class="flow-text">
+						{{photoHuntMsg._txtContent}}
+					</div>
+					<div id="textContent" class="flow-text right-align">
+						{{photoHuntMsg._nickName}}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -47,7 +57,7 @@
 
 
 	<!-- Angular Material Dependencies -->
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.min.js"></script>	
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.min.js"></script>
 	<!-- jQuery Dependency -->
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<!-- socket.io Dependency -->
