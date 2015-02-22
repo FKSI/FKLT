@@ -59,8 +59,10 @@ app.controller('masterCtrl', ['$scope', function ($scope) {
 	socket.on('message', function (data) {
 		if (data.category == MSG_CAT[0]) {
 			displayMsg(data, $scope.normalMsg);
+			fadeInImage('#normalMsgCol');
 		} else if (data.category == MSG_CAT[1]) {
 			displayMsg(data, $scope.photoHuntMsg);
+			fadeInImage('#photoHuntMsgCol');
 		}
 	});
 
