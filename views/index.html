@@ -35,22 +35,20 @@
 						</div>
 					</form>
 				</div>
-				<div class="card-action valign-wrapper center-align">
+				<div class="card-action center-align">
 					<button class="btn-large waves-effect waves-light" type="submit" name="action" data-ng-click="validateLoginForm()" data-ng-disabled="userForm.$invalid">
 						GO
 						<i class="mdi-content-send right"></i>
 					</button>
 				</div>
 			</div>
-			<div class="card" data-ng-show="!isLogin" data-ng-class="{'grey lighten-3 white-text':isPH}">
+			<div class="card " data-ng-show="!isLogin" data-ng-class="{'grey lighten-3 white-text':isPH}">
 				<div class="card-content black-text">
 					<div class="card-image waves-effect waves-block waves-light center-align">
 						<img id="imgPreview" src="" alt="Image Preview">
 					</div>
 					<div class="switch col s10 m12">
-						<span class="card-title black-text">
-								Ton message ? 		
-							</span>
+						<span class="card-title black-text">Ton message ?</span>
 						<label>
 							NORMAL
 							<input type="checkbox" data-ng-model="isPH">
@@ -62,19 +60,14 @@
 							<i class="small mdi-image-photo-camera right" data-ng-click="uploadFile()"></i>
 							<input type="file" capture="camera" id="filesToUpload" onClick="this.form.reset()" />
 							<textarea id="messageTA" class="materialize-textarea" data-ng-model="msg._txtContent"></textarea>
-							<label class="col s10 m10" for="messageTA">
-								En 140 caractères max. avec ou sans image :)
-							</label>
-							<span class="left badge teal lighten-2 white-text" data-ng-show="isPH">
-									PHOTO HUNT
-								</span>
+							<label class="col s10 m10" for="messageTA">En 140 caractères max. avec ou sans image :)</label>
+							<span class="left badge teal lighten-2 white-text" data-ng-show="isPH">PHOTO HUNT</span>
 							<span class="right" data-ng-class="{'red-text': msg._txtContent.length>140}">
-									{{140 - msg._txtContent.length}}/140
-								</span>
+							{{140 - msg._txtContent.length}}/140</span>
 						</div>
 					</form>
 				</div>
-				<div class="card-action valign-wrapper center-align white-text">
+				<div class="card-action center-align" id="msgActionContainer">
 					<button class="btn-large waves-effect waves-light" type="submit" name="action" data-ng-click="sendMessage()" data-ng-disabled="(!msg._txtContent && !isLoadImageFinish) 
 											  || msg._txtContent.length > 140">
 						Envoyer
@@ -87,12 +80,12 @@
 
 
 	<!-- Angular Material Dependencies -->
-<!--	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.min.js"></script>
+	<!--	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-cookies.js"></script>-->
 	<script type="text/javascript" src="/js/angular.min.js"></script>
 	<script type="text/javascript" src="/js/angular-cookies.min.js"></script>
 	<!-- jQuery Dependency -->
-<!--
+	<!--
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 -->
 	<script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
@@ -101,7 +94,7 @@
 	<!-- client-side application Dependency -->
 	<script type="text/javascript" src="/js/client.js"></script>
 	<!-- materialize Dependency -->
-	<script type="text/javascript" src="js/materialize.min.js"></script>
+	<script type="text/javascript" src="js/materialize.js"></script>
 
 
 </body>

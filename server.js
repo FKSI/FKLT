@@ -16,3 +16,7 @@ app.get('/', function(req, res){
 app.get('/master', function(req, res){
 	res.sendfile(__dirname + '/views/master.html');
 });
+
+app.get('/explorer', function(req, res){
+	res.sendfile(__dirname + '/views/explorer.html');
+});
