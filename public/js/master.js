@@ -12,7 +12,7 @@ app.controller('masterCtrl', ['$scope', function ($scope) {
 		1: "photoHunt"
 	};
 
-	var NB_MSG = 2;
+	var NB_MSG = 4;
 
 	$scope.normalMessages = [];
 	$scope.photoHuntMessages = [];
@@ -36,16 +36,8 @@ app.controller('masterCtrl', ['$scope', function ($scope) {
 		_isEmpty: true
 	};
 
-	function messageDispatcher(data, output) {
-		if (output.length == NB_MSG) {
-			output[output.length-2] = output[output.length-1];
-			output[output.length-1] = data;
-		} else if (output.length < NB_MSG) {
-			output.push(data);
-		}
-	}
 
-	function displayMsg(data, msgCategoryObject) {
+	function displayMsgBuilder(data, msgCategoryObject,output) {
 		msgCategoryObject._nickName = data.nick;
 		switch (data.type) {
 		case MSG_TYPE[0]:
@@ -70,19 +62,22 @@ app.controller('masterCtrl', ['$scope', function ($scope) {
 		}
 		msgCategoryObject._isEmpty = false;
 
-		return msgCategoryObject;
+		if (output.length == NB_MSG) {
+			output.shift();
+		}
+		output.push(msgCategoryObject);
 	}
 
 	socket.on('message', function (data) {
 		if (data.category == MSG_CAT[0]) {
 			var clonedNormalMsg = jQuery.extend(true, {}, $scope.normalMsg)
 			clonedNormalMsg._category = data.category;
-			messageDispatcher(displayMsg(data, clonedNormalMsg), $scope.normalMessages);
+			displayMsgBuilder(data, clonedNormalMsg, $scope.normalMessages);
 			fadeInImage('#normalMsgCol');
 		} else if (data.category == MSG_CAT[1]) {
 			var clonedPhotoHuntMsg = jQuery.extend(true, {}, $scope.photoHuntMsg)
 			clonedPhotoHuntMsg._category = data.category;
-			messageDispatcher(displayMsg(data, clonedPhotoHuntMsg), $scope.photoHuntMessages);
+			displayMsgBuilder(data, clonedPhotoHuntMsg, $scope.photoHuntMessages);
 			fadeInImage('#photoHuntMsgCol');
 		}
 		$scope.$apply();

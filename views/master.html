@@ -22,7 +22,7 @@
 	<!-- NORMAL MESSAGES -->
 	<div class="row valign-wrapper">
 		<div id="normalMsgCol" class="col s6 m6">
-			<div class="card white-text cyan lighten-1 z-depth-2" data-ng-repeat="nM in normalMessages track by $index" data-ng-class="{'previousMessage':$first && normalMessages.length>1}">
+			<div class="card white-text cyan lighten-1 z-depth-2" data-ng-repeat="nM in normalMessages track by $index" data-ng-class="{'previousMessage':!$last}">
 				<div class="card-image" data-ng-show="nM._isImg">
 					<img data-ng-src="{{nM._imgContent}}" />
 				</div>
@@ -38,7 +38,7 @@
 		</div>
 		<!-- PHOTOHUNT MESSAGES -->
 		<div id="photoHuntMsgCol" class="col s6 m6">
-			<div class="card white-text deep-purple lighten-1 z-depth-2" data-ng-repeat="pHM in photoHuntMessages track by $index" data-ng-class="{'previousMessage':$first && photoHuntMessages.length>1}">
+			<div class="card white-text deep-purple lighten-1 z-depth-2" data-ng-repeat="pHM in photoHuntMessages track by $index" data-ng-class="{'previousMessage':!$last}">
 				<div class="card-image" data-ng-show="pHM._isImg">
 					<img data-ng-src="{{pHM._imgContent}}" />
 				</div>
