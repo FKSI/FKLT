@@ -1,4 +1,4 @@
-<html>
+<html data-ng-app="explorerApp">
 
 <head>
 	<title>The Wedding Wall - W²</title>
@@ -11,33 +11,76 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 </head>
 
-<body>
+<body data-ng-controller="explorerCtrl">
 	<nav class="blue lighten-1" role="navigation">
-		<div class="container">
-			<div class="nav-wrapper">
-				<a id="logo-container" href="#" class="brand-logo">The Wedding Wall - W²</a>
-			</div>
+		<div class="nav-wrapper">
+			<a id="logo-container" href="#" class="brand-logo absoluteCenter">
+				<p class="flow-text">The Wedding Wall - W²</p>
+			</a>
 		</div>
 	</nav>
-	<div class="container grey lighten-3 z-depth-1">
-		<form>
-			<div class="input-field col s12">
-				<i class="mdi-action-search prefix"></i>
-				<input id="search" type="text" required>
-				<label for="search">
-					Rechercher
-				</label>
+	<div class="absoluteCenter" data-ng-show=isGettingAllPics>
+		<div class="preloader-wrapper medium active">
+			<div class="spinner-layer spinner-blue-only">
+				<div class="circle-clipper left">
+					<div class="circle"></div>
+				</div>
+				<div class="gap-patch">
+					<div class="circle"></div>
+				</div>
+				<div class="circle-clipper right">
+					<div class="circle"></div>
+				</div>
 			</div>
-		</form>
+		</div>
+		<p id="gettingAllPicsWaitMsg">
+			Un peu de patience, les photos vont ariver ! :)
+		</p>
+	</div>
+
+	<div class="container" data-ng-hide=isGettingAllPics>
+		<div class="row">
+			<div class="col s12 m12">
+				<div class="card blue-grey darken-1">
+					<div class="card-content white-text">
+						<span class="card-title">Bienvenue :)</span>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec laoreet ligula sit amet dapibus dignissim. Vestibulum interdum pharetra rhoncus. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" data-ng-repeat="row in rows">
+			<div class="col s1 m1 l1" data-ng-repeat="column in row">
+				<img class="materialboxed" width="600" data-ng-src="{{column.imgContent}}" data-ng-click="foo()">
+				<p class="center-align">
+					<input type="checkbox" id="{{column._id}}" ng-checked="downloadCart.indexOf(column._id) > -1" ng-click="addToDownloadCart(column._id)" />
+					<label for="{{column._id}}"></label>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal Structure -->
+	<div id="dlRequestedPicsModal" class="modal">
+		<div class="modal-content">
+			<h4>Modal Header</h4>
+			<p>A bunch of text</p>
+		</div>
+	</div>
+
+	<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+		<button class="waves-effect waves-light btn light-green" data-ng-click="getPicturesFromDB()" type="submit">{{downloadCart.length}}<i class="mdi-file-cloud-download right"></i>
+		</button>
 	</div>
 
 
 
 	<!-- Angular Material Dependencies -->
-	<!--	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-cookies.js"></script>-->
-	<script type="text/javascript" src="/js/angular.min.js"></script>
-	<script type="text/javascript" src="/js/angular-cookies.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-cookies.js"></script>
+	<!--	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular-cookies.min.js"></script>-->
 	<!-- jQuery Dependency -->
 	<!--
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -46,9 +89,11 @@
 	<!-- socket.io Dependency -->
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<!-- client-side application Dependency -->
-	<script type="text/javascript" src="/js/master.js"></script>
+	<script type="text/javascript" src="js/explorer.js"></script>
 	<!-- materialize Dependency -->
 	<script type="text/javascript" src="js/materialize.min.js"></script>
+	<!-- Grid-->
+	<script type="text/javascript" src="js/angular-deckgrid.js"></script>
 </body>
 
 </html>
