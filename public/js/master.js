@@ -23,7 +23,8 @@ app.controller('masterCtrl', ['$scope', function ($scope) {
 		_imgContent: '',
 		_nickName: '',
 		_isImg: false,
-		_isEmpty: true
+		_isEmpty: true,
+		_imgOrientation : ''
 	};
 
 	$scope.photoHuntMsg = {
@@ -33,11 +34,12 @@ app.controller('masterCtrl', ['$scope', function ($scope) {
 		_imgContent: '',
 		_nickName: '',
 		_isImg: false,
-		_isEmpty: true
+		_isEmpty: true,
+		_imgOrientation : ''
 	};
 
 
-	function displayMsgBuilder(data, msgCategoryObject,output) {
+	function displayMsgBuilder(data, msgCategoryObject, output) {
 		msgCategoryObject._nickName = data.nick;
 		switch (data.type) {
 		case MSG_TYPE[0]:
@@ -51,6 +53,7 @@ app.controller('masterCtrl', ['$scope', function ($scope) {
 			msgCategoryObject._txtContent = data.txtContent;
 			msgCategoryObject._imgContent = data.imgContent;
 			msgCategoryObject._isImg = true;
+			console.log("imgO", data)
 			break;
 		case MSG_TYPE[2]:
 			if (msgCategoryObject._imgContent != '') {
@@ -73,12 +76,12 @@ app.controller('masterCtrl', ['$scope', function ($scope) {
 			var clonedNormalMsg = jQuery.extend(true, {}, $scope.normalMsg)
 			clonedNormalMsg._category = data.category;
 			displayMsgBuilder(data, clonedNormalMsg, $scope.normalMessages);
-			fadeInImage('#normalMsgCol');
+			Materialize.fadeInImage('#normalMsgCol');
 		} else if (data.category == MSG_CAT[1]) {
 			var clonedPhotoHuntMsg = jQuery.extend(true, {}, $scope.photoHuntMsg)
 			clonedPhotoHuntMsg._category = data.category;
 			displayMsgBuilder(data, clonedPhotoHuntMsg, $scope.photoHuntMessages);
-			fadeInImage('#photoHuntMsgCol');
+			Materialize.fadeInImage('#photoHuntMsgCol');
 		}
 		$scope.$apply();
 	});

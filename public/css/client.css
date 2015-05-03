@@ -1,9 +1,46 @@
-
 input[type="file"],
-#imgPreview{
-	display:none;
+#imgPreview,
+#PhotoEdit {
+	display: none;
 }
 
-#msgActionContainer{
+#msgActionContainer {
 	margin-top: 17em;
+}
+
+.card .card-action {
+	border-top: none !important;
+}
+
+#previewContainer {
+	margin-top: 5%;
+}
+
+#charCounter {
+	margin-left: 3rem;
+}
+
+.linaGGBlue{
+	background-color: #009999 !important;
+}
+
+.input-field .prefix.active {
+  color: #009999 !important;
+}
+
+input[type=text]:focus:not([readonly])) {
+  border-bottom: 1px solid #009999 !important;
+  box-shadow: 0 1px 0 0 #009999 !important;
+}
+
+.btn.disabled, .disabled.btn-large, .btn-floating.disabled, .btn-large.disabled, .btn:disabled, .btn-large:disabled, .btn-large:disabled, .btn-floating:disabled {
+  background-color: #DFDFDF !important	;
+  box-shadow: none;
+  color: #9F9F9F;
+  cursor: default;
+}
+
+input[type=text]:focus:not([readonly]), input[type=password]:focus:not([readonly]), input[type=email]:focus:not([readonly]), input[type=url]:focus:not([readonly]), input[type=time]:focus:not([readonly]), input[type=date]:focus:not([readonly]), input[type=datetime-local]:focus:not([readonly]), input[type=tel]:focus:not([readonly]), input[type=number]:focus:not([readonly]), input[type=search]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
+  border-bottom: 1px solid #009999 !important;
+  box-shadow: 0 1px 0 0 #009999 !important;
 }

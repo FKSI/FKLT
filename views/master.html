@@ -12,7 +12,6 @@
 </head>
 
 <body data-ng-controller="masterCtrl" data-ng-class="{'pink accent-4': normalMessages.length==0 && photoHuntMessages.length==0	 }">
-	<nav class="pink lighten-1" role="navigation"></nav>
 	<div class="container center-align valign white-text" data-ng-show="normalMessages.length==0 && photoHuntMessages.length==0">
 		<i class="medium mdi-file-cloud-circle"></i>
 		<label class="flow-text white-text">
@@ -20,37 +19,33 @@
 		</label>
 	</div>
 	<!-- NORMAL MESSAGES -->
-	<div class="row valign-wrapper">
-		<div id="normalMsgCol" class="col s6 m6">
-			<div class="card white-text cyan lighten-1 z-depth-2" data-ng-repeat="nM in normalMessages track by $index" data-ng-class="{'previousMessage':!$last}">
-				<div class="card-image" data-ng-show="nM._isImg">
-					<a download="YourFileName.jpeg" href={{nM._imgContent}}>
-						<img data-ng-src="{{nM._imgContent}}" />
-					</a>
+	<div id="normalMsgCol" class="row">
+		<div class="card white-text linaGGBlue lighten-1 z-depth-2 col s3 m3" data-ng-repeat="nM in normalMessages track by $index" data-ng-class="{'previousMessage':!$last}">
+			<div class="card-image imgContainer" data-ng-show="nM._isImg">
+				<img class="responsive-img" data-ng-src="{{nM._imgContent}}" />
+			</div>
+			<div class="card-content">
+				<div id="textContent" class="flow-text">
+					{{nM._txtContent}}
 				</div>
-				<div class="card-content">
-					<div id="textContent" class="flow-text">
-						{{nM._txtContent}}
-					</div>
-					<div id="textContent" class="flow-text right-align">
-						{{nM._nickName}}
-					</div>
+				<div id="textContent" class="flow-text right-align cardNickname">
+					<i class="mdi-social-person"></i> {{nM._nickName}}
 				</div>
 			</div>
 		</div>
-		<!-- PHOTOHUNT MESSAGES -->
-		<div id="photoHuntMsgCol" class="col s6 m6">
-			<div class="card white-text deep-purple lighten-1 z-depth-2" data-ng-repeat="pHM in photoHuntMessages track by $index" data-ng-class="{'previousMessage':!$last}">
-				<div class="card-image" data-ng-show="pHM._isImg">
-					<img data-ng-src="{{pHM._imgContent}}" />
+	</div>
+	<!-- PHOTOHUNT MESSAGES -->
+	<div id="photoHuntMsgCol" class="row">
+		<div class="card white-text linaGGViolet lighten-1 z-depth-2 col s3 m3" data-ng-repeat="pHM in photoHuntMessages track by $index" data-ng-class="{'previousMessage':!$last}">
+			<div class="card-image imgContainer" data-ng-show="pHM._isImg">
+				<img data-ng-src="{{pHM._imgContent}}" />
+			</div>
+			<div class="card-content">
+				<div id="textContent" class="flow-text">
+					{{pHM._txtContent}}
 				</div>
-				<div class="card-content">
-					<div id="textContent" class="flow-text">
-						{{pHM._txtContent}}
-					</div>
-					<div id="textContent" class="flow-text right-align">
-						{{pHM._nickName}}
-					</div>
+				<div id="textContent" class="flow-text right-align cardNickname">
+					<i class="mdi-social-person"></i> {{pHM._nickName}}
 				</div>
 			</div>
 		</div>
@@ -68,6 +63,7 @@
 	<script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
 	<!-- socket.io Dependency -->
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="/js/load-image.all.min.js"></script>
 	<!-- client-side application Dependency -->
 	<script type="text/javascript" src="/js/master.js"></script>
 	<!-- materialize Dependency -->

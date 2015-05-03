@@ -12,12 +12,6 @@
 </head>
 
 <body data-ng-controller="clientCtrl">
-	<nav class="indigo lighten-1" role="navigation">
-		<div class="container">
-			<div class="nav-wrapper">
-				<a id="logo-container" href="#" class="brand-logo">The Wedding Wall - W²</a>
-			</div>
-		</div>
 	</nav>
 	<div class="row">
 		<div class="col s12 m12">
@@ -30,13 +24,13 @@
 					<form name="userForm">
 						<div class="input-field">
 							<i class="mdi-action-account-circle prefix"></i>
-							<input required id="icon_prefix" type="text" class="validate" data-ng-model="user.login" data-ng-maxlength="8" style="text-transform:uppercase">
-							<label for="icon_prefix">Ex: KYKY</label>
+							<input required id="icon_prefix" type="text" class="validate" data-ng-model="user.login" data-ng-maxlength="15" style="text-transform:uppercase">
+							<label for="icon_prefix">Ex: KYKY (Max 15 caractères)</label>
 						</div>
 					</form>
 				</div>
 				<div class="card-action center-align">
-					<button class="btn-large waves-effect waves-light" type="submit" name="action" data-ng-click="validateLoginForm()" data-ng-disabled="userForm.$invalid">
+					<button class="btn-large waves-effect waves-light linaGGBlue" type="submit" name="action" data-ng-click="validateLoginForm()" data-ng-disabled="userForm.$invalid">
 						GO
 						<i class="mdi-content-send right"></i>
 					</button>
@@ -44,11 +38,11 @@
 			</div>
 			<div class="card " data-ng-show="!isLogin" data-ng-class="{'grey lighten-3 white-text':isPH}">
 				<div class="card-content black-text">
-					<div class="card-image waves-effect waves-block waves-light center-align">
-						<img id="imgPreview" src="" alt="Image Preview">
-					</div>
+
 					<div class="switch col s10 m12">
 						<span class="card-title black-text">Ton message ?</span>
+					</div>
+					<div class="switch col s12 m12">
 						<label>
 							NORMAL
 							<input type="checkbox" data-ng-model="isPH">
@@ -56,20 +50,20 @@
 						</label>
 					</div>
 					<form name="sendMessageForm" id="sendMessageForm" class="col s12 m12">
-						<div class="input-field">
-							<i class="small mdi-image-photo-camera right" data-ng-click="uploadFile()"></i>
-							<input type="file" capture="camera" id="filesToUpload" onClick="this.form.reset()" />
+						<div id="previewContainer" class="card-image waves-effect waves-block waves-light center-align">
+						</div>
+						<input type="file" accept="image/jpeg" id="filesToUpload" onClick="this.form.reset()" />
+						<div class="input-field col s12 m12">
+						<i class="small mdi-image-photo-camera prefix" data-ng-click="uploadFile()"></i>
 							<textarea id="messageTA" class="materialize-textarea" data-ng-model="msg._txtContent"></textarea>
-							<label class="col s10 m10" for="messageTA">En 140 caractères max. avec ou sans image :)</label>
-							<span class="left badge teal lighten-2 white-text" data-ng-show="isPH">PHOTO HUNT</span>
-							<span class="right" data-ng-class="{'red-text': msg._txtContent.length>140}">
-							{{140 - msg._txtContent.length}}/140</span>
+							<label for="messageTA">En 140 caractères max. avec ou sans image :)</label>
+							<span class="right badge teal lighten-2 white-text" data-ng-show="isPH">PHOTO HUNT</span>
+							<span id="charCounter" class="left" data-ng-class="{'red-text': msg._txtContent.length>140}">{{140 - msg._txtContent.length}}/140</span>
 						</div>
 					</form>
 				</div>
 				<div class="card-action center-align" id="msgActionContainer">
-					<button class="btn-large waves-effect waves-light" type="submit" name="action" data-ng-click="sendMessage()" data-ng-disabled="(!msg._txtContent && !isLoadImageFinish) 
-											  || msg._txtContent.length > 140">
+					<button class="btn-large waves-effect waves-light linaGGBlue" type="submit" name="action" data-ng-click="sendMessage()" data-ng-disabled="(!msg._txtContent && !isLoadImageFinish) || msg._txtContent.length > 140">
 						Envoyer
 						<i class="mdi-content-send right"></i>
 					</button>
@@ -91,10 +85,13 @@
 	<script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
 	<!-- socket.io Dependency -->
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="/js/load-image.all.min.js"></script>
 	<!-- client-side application Dependency -->
 	<script type="text/javascript" src="/js/client.js"></script>
 	<!-- materialize Dependency -->
 	<script type="text/javascript" src="js/materialize.js"></script>
+
+
 
 
 </body>

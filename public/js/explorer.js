@@ -1,4 +1,4 @@
-var app = angular.module('explorerApp', ['akoenig.deckgrid']);
+var app = angular.module('explorerApp', []);
 
 
 
@@ -29,8 +29,8 @@ app.controller('explorerCtrl', ['$scope', '$http', function ($scope, $http) {
 	});
 
 
-	$scope.foo = function () {
-		$('.materialboxed').materialbox();
+	$scope.foo = function(){
+			$('.materialboxed').materialbox();	
 	}
 	$scope.getPicturesFromDB = function () {
 		var _download_cart = JSON.stringify($scope.downloadCart);

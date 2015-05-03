@@ -7,7 +7,8 @@ app.controller('clientCtrl', ['$scope', '$filter', '$cookieStore', function ($sc
 		_category: '',
 		_type: '',
 		_txtContent: '',
-		_imgContent: ''
+		_imgContent: '',
+		_imgOrientation: ''
 	};
 	var MSG_TYPE = {
 		0: "image",
@@ -27,7 +28,8 @@ app.controller('clientCtrl', ['$scope', '$filter', '$cookieStore', function ($sc
 		_category: '',
 		_type: '',
 		_txtContent: '',
-		_imgContent: ''
+		_imgContent: '',
+		_imgOrientation: ''
 	}
 	$scope.msg._txtContent = '';
 	$scope.previewImage = '';
@@ -37,6 +39,7 @@ app.controller('clientCtrl', ['$scope', '$filter', '$cookieStore', function ($sc
 		$scope.user.login = $cookieStore.get('cookedNickname');
 	}
 
+	var _previewContainer = $("#previewContainer");
 	/**
 	 *
 	 * Save the uploaded image to an AngularJS scope variable
@@ -44,36 +47,81 @@ app.controller('clientCtrl', ['$scope', '$filter', '$cookieStore', function ($sc
 	 * Update the UI accordingly
 	 *
 	 **/
-	function previewFile() {
-		if (window.File && window.FileReader && window.FileList && window.Blob) {
-			// Get the img DOM element
-			var preview = document.getElementById("imgPreview");
-			// Get the input[type=file] DOM element
-			var file = document.getElementById("filesToUpload").files[0];
-			var reader = new FileReader();
+	/*
+			function previewFile() {
+				if (window.File && window.FileReader && window.FileList && window.Blob) {
+					// Get the img DOM element
+					var preview = document.getElementById("imgPreview");
+					// Get the input[type=file] DOM element
+					var file = document.getElementById("filesToUpload").files[0];
+					var reader = new FileReader();
 
-			reader.onloadend = function () {
-				$('#imgPreview').show();
-				// Set the image preview source to the upload image
-				preview.src = reader.result;
-				// Save the uploaded image to an AngularJS scope variable
-				$scope.previewImage = reader.result;
-				// Notify AngularJS scope that an image is ready to be send
-				$scope.isLoadImageFinish = true;
-				$scope.$apply();
-			}
-			if (file) {
-				reader.readAsDataURL(file);
-			} else {
-				preview.src = "";
-			}
-		} else {
-			//TOOD Display in the UI and prevent image upload
-			alert('The File APIs are not fully supported in this browser.');
+					reader.onloadend = function () {
+						$('#imgPreview').show();
+						console.debug("LO>SLD2");
+						// Set the image preview source to the upload image
+						preview.src = reader.result;
+						// Save the uploaded image to an AngularJS scope variable
+						$scope.previewImage = reader.result;
+						// Notify AngularJS scope that an image is ready to be send
+						$scope.isLoadImageFinish = true;
+						$scope.$apply();
+					}
+					if (file) {
+						var d = reader.readAsDataURL(file);
+						window.URL.revokeObjectURL(d);
+					} else {
+						preview.src = "";
+					}
+				} else {
+					//TODO Display in the UI and prevent image upload
+					alert('The File APIs are not fully supported in this browser.');
+				}
+			};
+	*/
+
+	//	$("#filesToUpload").on("change", previewFile);
+
+	document.getElementById('filesToUpload').onchange = function (e) {
+		
+		_previewContainer.empty();
+		var file = e.target.files[0];
+
+		var reader = new FileReader();
+
+		reader.onloadend = function () {
+			$scope.previewImage = reader.result;
 		}
-	};
+		reader.readAsDataURL(file);
+		loadImage.parseMetaData(file, function (data) {
+			var options = {
+				maxWidth: 120,
+				maxHeight: 160,
+				canvas: true
+			}
+			if (data.exif) {
+				options.orientation = data.exif.get('Orientation');
+				$scope.msg._imgOrientation = data.exif.get('Orientation');
+				thumb = data.exif.get('Thumbnail');
+				loadImage(
+					thumb,
+					function (img) {
+						_previewContainer.append(img);
+					}, options
+				);
+			} else {
+				$scope.msg._imgOrientation = '';
+				loadImage(
+					file,
+					function (img) {
+						_previewContainer.append(img);
+					}, options
+				);
+			}
+			$scope.isLoadImageFinish = true;
 
-	$("#filesToUpload").on("change", previewFile);
+		});
+	};
 
 
 	/**
@@ -130,11 +178,11 @@ app.controller('clientCtrl', ['$scope', '$filter', '$cookieStore', function ($sc
 		} else {
 			temp._category = MSG_CAT[1];
 		}
-
 		if (txtContent == "" && (imgContent != undefined || imgContent != "")) {
 			// Image only type message
 			temp._type = MSG_TYPE[0];
 			temp._imgContent = imgContent;
+			temp._imgOrientation = $scope.msg._imgOrientation;
 		} else if (txtContent != "" && (imgContent == undefined || imgContent == "")) {
 			// Text only type message
 			temp._type = MSG_TYPE[2];
@@ -144,24 +192,24 @@ app.controller('clientCtrl', ['$scope', '$filter', '$cookieStore', function ($sc
 			temp._type = MSG_TYPE[1];
 			temp._txtContent = txtContent;
 			temp._imgContent = imgContent;
+			temp._imgOrientation = $scope.msg._imgOrientation;
 		}
-
 
 		// Send the message
 		socket.emit('message', temp, function (cb) {
 			console.log("cb : ", cb);
 			if (cb) {
 				toast('Message envoyé !<a class="btn-flat blue-text" href="#">OK<a>', 2000);
-			}else{
+			} else {
 				toast('Oups, ça n\'a pas fonctionné !<a class="btn-flat blue-text" href="#">OK<a>', 2000);
 			}
 		});
 
 		// Clear the form
-		$('#imgPreview').hide();
+		_previewContainer.empty();
 		$scope.msg._txtContent = '';
 		$scope.previewImage = '';
-		$('#foo').val('');
+		$scope.isLoadImageFinish = false;
 
 	}
 

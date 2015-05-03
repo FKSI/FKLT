@@ -1,16 +1,71 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	background-image: url(/image/skulls.png);
+	background-repeat: repeat;
+}
+
 .fadeIn {
-  visibility: visible !important;
-  opacity: 1 !important;
-  transition: opacity 2s linear !important;
+	visibility: visible !important;
+	opacity: 1 !important;
+	transition: opacity 2s linear !important;
 }
 
 .fadeOut {
-  visibility: hidden !important;
-  opacity: 0 !important;
-  transition: visibility 0s 0.5s, opacity 0.5s linear !important;
+	visibility: hidden !important;
+	opacity: 0 !important;
+	transition: visibility 0s 0.5s, opacity 0.5s linear !important;
 }
 
-.previousMessage{
-	width: 50%;
-	opacity: 0.5;
+.previousMessage {
+	opacity: 0.6;
+}
+
+
+.cardNickname {
+	font-weight: bold !important;
+	/*color: #662D91 !important;*/
+}
+
+.imgContainer {
+	height: 0;
+	padding-bottom: 70%;
+	position: relative;
+	overflow: hidden;
+}
+
+.imgContainer img {
+	display: inline-block;
+	max-width: 100% !important;
+	max-height: 100% !important;
+	width: auto !important;
+	height: auto !important;
+	position: absolute !important;
+	left: 50% !important;
+	top: 50% !important;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
+img {
+	image-orientation: from-image;
+}
+
+#normalMsgCol {
+	height: 50%;
+}
+
+.card {
+	margin-left: 1% !important;
+	width: 23.8% !important;
+}
+
+.linaGGBlue {
+	background-color: #009999 !important;
+}
+
+.linaGGViolet {
+	background-color: #662D91 !important;
 }
