@@ -66,9 +66,9 @@ app.controller('explorerCtrl', ['$scope', '$http', function ($scope, $http) {
 		return R;
 	};
 
-	$scope.addToDownloadCart = function addToDownloadCart(pictureID) {
+	$scope.addToDownloadCart = function addToDownloadCart(pictureID,pictureCAT) {
 		var idx = $scope.downloadCart.indexOf(pictureID);
-
+		var picToDownload = {"ID":"","CAT":""};
 		// is currently selected
 		if (idx > -1) {
 			$scope.downloadCart.splice(idx, 1);
@@ -76,7 +76,9 @@ app.controller('explorerCtrl', ['$scope', '$http', function ($scope, $http) {
 
 		// is newly selected
 		else {
-			$scope.downloadCart.push(pictureID);
+			picToDownload.ID = pictureID;
+			picToDownload.CAT = pictureCAT;
+			$scope.downloadCart.push(picToDownload);
 		}
 	};
 

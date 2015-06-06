@@ -52,9 +52,9 @@
 
 		<div class="row" data-ng-repeat="row in rows">
 			<div class="col s1 m1 l1" data-ng-repeat="column in row">
-				<img class="materialboxed" width="600" data-ng-src="/pictures/normal/{{column._id}}.jpg" data-ng-click="initMaterialBoxed()">
+				<img class="materialboxed" width="600" data-ng-src="/pictures/{{column.category[0]}}/{{column._id}}.jpg" data-ng-click="initMaterialBoxed()">
 				<p class="center-align">
-					<input type="checkbox" id="{{column._id}}" ng-checked="downloadCart.indexOf(column._id) > -1" ng-click="addToDownloadCart(column._id)" />
+					<input type="checkbox" id="{{column._id}}" ng-checked="downloadCart.indexOf(column._id) > -1" ng-click="addToDownloadCart(column._id,column.category[0])" />
 					<label for="{{column._id}}"></label>
 				</p>
 			</div>

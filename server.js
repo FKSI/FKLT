@@ -32,7 +32,7 @@ app.get('/timeline', function (req, res) {
 
 app.get('/allPictures', function (req, res) {
 	console.log(req.param('_category'));
-	db.getImageMsgs(req.param('_category'), function (err, docs) {
+	db.getImageMsgs("", function (err, docs) {
 		if (!err) {
 			res.status(200).send(docs);
 		} else {
@@ -53,12 +53,11 @@ app.get('/allPictures', function (req, res) {
  **/
 app.get('/userRequestedPictures', function (req, res) {
 	// Get requested pictures' String id
-	var req_pictures_id = JSON.parse(req.param('download_cart'));
+	var req_pictures = JSON.parse(req.param('download_cart'));
 	// Create response ZIP archive
 	var zip = new JSZip();
 
-	// FS paths
-	var picturesPath = "public/pictures/normal/";
+	// FS ZIP archive path
 	var users_archivesPath = "public/users_archives/"
 
 
@@ -66,8 +65,9 @@ app.get('/userRequestedPictures', function (req, res) {
 	var img = zip.folder("Photos Mariage - Jerome et Lina - 250715");
 	
 	// Add pictures to ZIP archive
-	for (var i = 0; i < req_pictures_id.length; i++) {
-		var filePathName = picturesPath + req_pictures_id[i] + '.jpg'
+	for (var i = 0; i < req_pictures.length; i++) {
+		var picturesPath = "public/pictures/" + req_pictures[i].CAT + "/";
+		var filePathName = picturesPath + req_pictures[i].ID + '.jpg'
 		var data = fs.readFileSync(filePathName);
 		img.file(filePathName, data, {
 			createFolders: false,
