@@ -1,8 +1,8 @@
-var app = angular.module('explorerApp', []);
+var app = angular.module('timelineApp', []);
 
 
 
-app.controller('explorerCtrl', ['$scope', '$http', function ($scope, $http) {
+app.controller('timelineCtrl', ['$scope', '$http', function ($scope, $http) {
 	var socket = io.connect();
 	var NUM_COL = 12;
 
@@ -29,14 +29,13 @@ app.controller('explorerCtrl', ['$scope', '$http', function ($scope, $http) {
 	});
 
 
-	$scope.initMaterialBoxed = function () {
-		$('.materialboxed').materialbox();
+	$scope.initMaterialBoxed = function(){
+			$('.materialboxed').materialbox();	
 	}
-
-
 	$scope.getPicturesFromDB = function () {
 		var _download_cart = JSON.stringify($scope.downloadCart);
 		if ($scope.downloadCart.length != 0) {
+			//$('#dlRequestedPicsModal').openModal();
 			console.log("my ajax param : ", _download_cart);
 			$http({
 				url: window.location.origin + "/userRequestedPictures",
@@ -46,14 +45,9 @@ app.controller('explorerCtrl', ['$scope', '$http', function ($scope, $http) {
 				}
 			}).
 			success(function (data, status, headers, config) {
-				console.log('data', data);
-				//$('#dlRequestedPicsModal').openModal();
+				//				console.log('data', data);
 				//$('#dlRequestedPicsModal').closeModal();
-				//location.href = data.replace("public/", "");
-				window.open(
-					data.replace("public/", ""),
-					'_blank' // <- This is what makes it open in a new window.
-				);
+				location.href = data;
 			});
 		}
 		// TODO Handle when no item is selected

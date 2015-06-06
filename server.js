@@ -27,7 +27,7 @@ app.get('/explorer', function (req, res) {
 });
 
 app.get('/allPictures', function (req, res) {
-	console.log(req.param('_category'))
+	console.log(req.param('_category'));
 	db.getImageMsgs(req.param('_category'), function (err, docs) {
 		if (!err) {
 			res.status(200).send(docs);
@@ -49,48 +49,39 @@ app.get('/allPictures', function (req, res) {
  **/
 app.get('/userRequestedPictures', function (req, res) {
 	// Get requested pictures' String id
-	var dl_cart = JSON.parse(req.param('download_cart'));
-	// Create response ZIP file
+	var req_pictures_id = JSON.parse(req.param('download_cart'));
+	// Create response ZIP archive
 	var zip = new JSZip();
 
-	// Convert String ids to ObjectId ids
-	var dl_cart_objectId = dl_cart.map(function (foo) {
-		return mongoose.Types.ObjectId(foo);
+	// FS paths
+	var picturesPath = "public/pictures/normal/";
+	var users_archivesPath = "public/users_archives/"
+
+
+	// Root folder in the response ZIP archive
+	var img = zip.folder("Photos Mariage - Jerome et Lina - 250715");
+	
+	// Add pictures to ZIP archive
+	for (var i = 0; i < req_pictures_id.length; i++) {
+		var filePathName = picturesPath + req_pictures_id[i] + '.jpg'
+		var data = fs.readFileSync(filePathName);
+		img.file(filePathName, data, {
+			createFolders: false,
+			compression: "DEFLATE"
+		});
+	}
+
+	// Generate the response ZIP archive
+	var content = zip.generate({
+		type: "nodebuffer"
 	});
 
-
-	var picFiles = [];
-
-	// Root folder in the response ZIP file
-	var img = zip.folder("images");
-
-
-	db.getRawPic(dl_cart_objectId, function (err, docs) {
-		if (err != null) {
-			console.error("Error while retrieving image from database");
-		} else {
-			picFiles = docs;
-
-			for (picFileIndex in picFiles) {
-				// Buffering picture base64 representation
-				var buff = new Buffer(picFiles[picFileIndex].imgContent.replace(/^data:image\/(png|gif|jpeg);base64,/, ''), 'base64');
-
-				// Converting buffer to file and injection in the response ZIP file
-				img.file(dl_cart[picFileIndex] + '.jpg', buff, {
-					base64: true
-				});
-			}
-
-			// Generate the response ZIP file in  a base64 representation
-			var content = zip.generate({
-				type: "base64"
-			});
-
-
-			link = "data:application/zip;base64," + content;
-			res.send(link);
-		}
-
+	// Save the response ZIP archive in FS
+	var archiveName = users_archivesPath + Date.now() + ".zip";
+	fs.writeFile(archiveName, content, function (err) {
+		// Send the respons ZIP archive path for download
+		var link = archiveName;
+		res.send(link);
 	});
 
 });

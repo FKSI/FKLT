@@ -1,0 +1,22 @@
+img:not(.active) {
+	height: auto;
+	max-width: 100%;
+}
+
+.absoluteCenter {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex !important;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	cursor: default;
+}
+
+
+#gettingAllPicsWaitMsg{
+	margin-left: 2em;
+}

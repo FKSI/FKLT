@@ -17,8 +17,9 @@
 		<div class="col s12 m12">
 			<div class="card blue-grey darken-3" data-ng-show="isLogin">
 				<div class="card-content white-text">
-					<div id="loginAvatar" class="center-align">
-						<i class="large mdi-action-face-unlock"></i>
+					<div class="center-align">
+						<!--<i class="large mdi-action-face-unlock"></i>-->
+						<img id="loginAvatar" src="image/DHpurple.svg" alt="" class="circle responsive-img">
 					</div>
 					<span class="card-title">Ton petit nom ?</span>
 					<form name="userForm">
@@ -63,7 +64,7 @@
 					</form>
 				</div>
 				<div class="card-action center-align" id="msgActionContainer">
-					<button class="btn-large waves-effect waves-light linaGGBlue" type="submit" name="action" data-ng-click="sendMessage()" data-ng-disabled="(!msg._txtContent && !isLoadImageFinish) || msg._txtContent.length > 140">
+					<button class="btn-large waves-effect waves-light linaGGBlue" type="submit" name="action" data-ng-click="sendMessage()" data-ng-disabled="(msg._txtContent.length == 0 && !isLoadImageFinish) || msg._txtContent.length > 140">
 						Envoyer
 						<i class="mdi-content-send right"></i>
 					</button>

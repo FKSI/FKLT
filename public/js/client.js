@@ -119,6 +119,7 @@ app.controller('clientCtrl', ['$scope', '$filter', '$cookieStore', function ($sc
 				);
 			}
 			$scope.isLoadImageFinish = true;
+			$scope.$apply();
 
 		});
 	};
