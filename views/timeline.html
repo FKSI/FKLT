@@ -1,4 +1,4 @@
-<html data-ng-app="explorerApp">
+<html data-ng-app="timelineApp">
 
 <head>
 	<title>The Wedding Wall - W²</title>
@@ -19,59 +19,27 @@
 			</a>
 		</div>
 	</nav>
-	<div class="absoluteCenter" data-ng-show=isGettingAllPics>
-		<div class="preloader-wrapper medium active">
-			<div class="spinner-layer spinner-blue-only">
-				<div class="circle-clipper left">
-					<div class="circle"></div>
-				</div>
-				<div class="gap-patch">
-					<div class="circle"></div>
-				</div>
-				<div class="circle-clipper right">
-					<div class="circle"></div>
-				</div>
-			</div>
-		</div>
-		<p id="gettingAllPicsWaitMsg">
-			Un peu de patience, les photos vont arriver ! :)
-		</p>
-	</div>
 
-	<div class="container" data-ng-hide=isGettingAllPics>
-		<div class="row">
-			<div class="col s12 m12">
-				<div class="card blue-grey darken-1">
-					<div class="card-content white-text">
-						<span class="card-title">Bienvenue :)</span>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec laoreet ligula sit amet dapibus dignissim. Vestibulum interdum pharetra rhoncus. Nulla facilisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
-					</div>
-				</div>
-			</div>
+	<div>
+		<div id="timeline">
+			<ul id="dates" >
+				<li ng-repeat="item in catNormalData">
+					<a href="#item._id">{{item.created | date:'HH:mm'}}</a>
+				</li>
+			</ul>
+			<ul id="issues">
+				<li id="item._id" ng-repeat="item in catNormalData">
+					<img src="pictures/{{item.category[0]}}/{{item._id}}.jpg" width="45%" height="auto" />
+					<h1>{{item.nick}}</h1>
+					<p>{{item.txtContent}}</p>
+				</li>
+			</ul>
+			<div id="grad_left"></div>
+			<div id="grad_right"></div>
+			<a href="#" id="next">+</a>
+			<a href="#" id="prev">-</a>
 		</div>
 
-		<div class="row" data-ng-repeat="row in rows">
-			<div class="col s1 m1 l1" data-ng-repeat="column in row">
-				<img class="materialboxed" width="600" data-ng-src="{{column.imgContent}}" data-ng-click="initMaterialBoxed()">
-				<p class="center-align">
-					<input type="checkbox" id="{{column._id}}" ng-checked="downloadCart.indexOf(column._id) > -1" ng-click="addToDownloadCart(column._id)" />
-					<label for="{{column._id}}"></label>
-				</p>
-			</div>
-		</div>
-	</div>
-
-	<!-- Modal Structure -->
-	<div id="dlRequestedPicsModal" class="modal">
-		<div class="modal-content">
-			<h4>Modal Header</h4>
-			<p>A bunch of text</p>
-		</div>
-	</div>
-
-	<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-		<button class="waves-effect waves-light btn light-green" data-ng-click="getPicturesFromDB()" type="submit">{{downloadCart.length}}<i class="mdi-file-cloud-download right"></i>
-		</button>
 	</div>
 
 
@@ -92,8 +60,8 @@
 	<script type="text/javascript" src="js/timeline.js"></script>
 	<!-- materialize Dependency -->
 	<script type="text/javascript" src="js/materialize.min.js"></script>
-	<!-- Grid-->
-	<script type="text/javascript" src="js/angular-deckgrid.js"></script>
+	<!-- jquery Timelinr Dependency -->
+	<script type="text/javascript" src="js/jquery.timelinr-0.9.54.js"></script>
 </body>
 
 </html>
