@@ -155,3 +155,11 @@ img {
 #prev.disabled {
 	opacity: 0.2;
 }
+
+#navBarBg{
+	background-color: #703090 !important;
+}
+
+#dates li > a{
+	color: #703090;
+}

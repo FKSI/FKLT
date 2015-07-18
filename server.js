@@ -10,7 +10,10 @@ var app = express();
 app.use(app.router);
 app.use(express.static(__dirname + '/public'));
 
+// PROD
+// var server = http.createServer(app).listen('3000', '0.0.0.0');
 
+// DEV
 var server = http.createServer(app).listen('3000', '192.168.1.20');
 chatServer.listen(server);
 
@@ -67,9 +70,10 @@ app.get('/userRequestedPictures', function (req, res) {
 	// Add pictures to ZIP archive
 	for (var i = 0; i < req_pictures.length; i++) {
 		var picturesPath = "public/pictures/" + req_pictures[i].CAT + "/";
-		var filePathName = picturesPath + req_pictures[i].ID + '.jpg'
+		var fileName = req_pictures[i].ID + '.jpg';
+		var filePathName = picturesPath + fileName;
 		var data = fs.readFileSync(filePathName);
-		img.file(filePathName, data, {
+		img.file(fileName, data, {
 			createFolders: false,
 			compression: "DEFLATE"
 		});
