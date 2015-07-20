@@ -1,0 +1,52 @@
+<html data-ng-app="thanksApp">
+
+<head>
+	<title>Jerôme et Lina 25.07.15</title>
+
+	<!--Import master-side application CSS-->
+	<link rel="stylesheet" href="/css/thanks.css" />
+	<!--Import materialize.css-->
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+	<!--Let browser know website is optimized for mobile-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</head>
+
+<body data-ng-controller="thanksCtrl">
+	<!--	<div class="container">
+		<div class="row">
+			<div class="col s12 center-align">
+				<img id="imgThanks" src="http://previews.123rf.com/images/maridav/maridav1111/maridav111100026/11224577-Happy-sporty-couple-portrait-Runners-outside-resting-after-running-Man-and-woman-smiling-at-each-oth-Stock-Photo.jpg" alt="" class="circle responsive-img">
+			</div>
+			<div class="col s12 center-align">
+				 <p class="flow-text">Merci à tous :)</p>
+			</div>
+		</div>
+	</div>-->
+	<div class="slider fullscreen">
+		<ul class="slides">
+			<li>
+				
+				<!--<img src="https://unsplash.imgix.net/photo-1414924347000-9823c338079b?q=75&fm=jpg&s=0fa6db3cdc65e50c111575043fad4b5c">-->
+				<img id="bgThanks" src="http://previews.123rf.com/images/maridav/maridav1111/maridav111100026/11224577-Happy-sporty-couple-portrait-Runners-outside-resting-after-running-Man-and-woman-smiling-at-each-oth-Stock-Photo.jpg">
+				<!-- random image -->
+				<div class="caption center-align">
+					<h3>Merci à tous</h3>
+					<p class="flow-text">Les photos sont disponibles <a>ici</a></p>
+					<h5 class="light grey-text text-lighten-3">Jerôme et Lina</h5>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+	<!-- Angular Material Dependencies -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-cookies.js"></script>
+	<script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+	<!-- materialize Dependency -->
+	<script type="text/javascript" src="js/materialize.min.js"></script>
+	<script>    $(document).ready(function(){
+      $('.slider').slider({full_width: true});
+    });</script>
+</body>
+
+</html>
