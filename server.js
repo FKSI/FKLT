@@ -33,6 +33,10 @@ app.get('/timeline', function (req, res) {
 	res.sendfile(__dirname + '/views/timeline.html');
 });
 
+app.get('/thanks', function (req, res) {
+	res.sendfile(__dirname + '/views/thanks.html');
+});
+
 app.get('/allPictures', function (req, res) {
 	console.log(req.param('_category'));
 	db.getImageMsgs("", function (err, docs) {
